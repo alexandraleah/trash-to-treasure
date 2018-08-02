@@ -1,13 +1,13 @@
-import React from 'react';
-// import { Link } from 'react-router-dom';
-import { MapContainer } from './components/MapContainer';
-
-const App = () => {
+import React, { Component } from 'react';
+import Map from '../src/components/Map';
+import Post from './components/Post';
+export default function App(props) {
   return (
     <div>
-      <MapContainer />
+      <h1>Allston Christmas</h1>
+      <h2>Find free stuff on the street</h2>
+      <Post />
+      <Map />
     </div>
   );
-};
-
-export default App;
+}
