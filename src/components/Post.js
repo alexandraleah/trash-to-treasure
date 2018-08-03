@@ -49,6 +49,10 @@ export default class Post extends Component {
       console.log('after setState this is the state,', this.state);
       //get geolocation
       //if gelocation is not available need to have a fallback option with an else block. Possibly prompt user to enter in a place or select a point on the map. but for now we will just write a message to the console
+      //maybe give them a choice whether to geolocate if they have the possiblity? that way if they are home posting it later or something. but then you will need a new page for it.
+      //also if you have a progress bar it could show the progress for the combined uploading and geolocating.
+      //look into how to do that.
+      //when i save in the database do I want to shrink the photos first? maybe i don't need to?
       if (navigator && navigator.geolocation) {
         const pos = await getUserPosition();
         const coords = pos.coords;
@@ -80,6 +84,7 @@ export default class Post extends Component {
             accept="image/*"
             name="photo"
             randomizeFilename
+            capture
             storageRef={firebase.storage().ref('images')}
             onUploadStart={this.handleUploadStart}
             onUploadError={this.handleUploadError}
