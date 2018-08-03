@@ -1,67 +1,95 @@
 import React, { Component } from 'react';
-import fire from '../fire';
+import firebase from '../fire';
+import FileUploader from 'react-firebase-file-uploader';
+const database = firebase.database();
+
 export default class Post extends Component {
   constructor(props) {
     super(props);
-    this.state = { photos: [], selectedPhoto: null };
+    this.state = {
+      isUploading: false,
+      progress: 0,
+      image: '',
+      imageURL: '',
+      postingDate: '',
+      postingLocation: {},
+    };
   }
-  componentWillMount() {
-    /* Create reference to messages in Firebase Database */
-    let photosRef = fire
-      .database()
-      .ref('photos')
-      .orderByKey()
-      .limitToLast(100);
-    photosRef.on('child_added', snapshot => {
-      /* Update React state when photo is added at Firebase Database */
-      let selectedPhoto = { image: snapshot.val(), id: snapshot.key };
-      this.setState({ photos: [selectedPhoto].concat(this.state.photos) });
+
+  handleUploadStart = () => this.setState({ isUploading: true, progress: 0 });
+
+  handleProgress = progress => this.setState({ progress });
+
+  handleUploadError = error => {
+    this.setState({ isUploading: false });
+    console.error(error);
+  };
+
+  handleUploadSuccess = async filename => {
+    await navigator.geolocation.getCurrentPosition(pos => {
+      const coords = pos.coords;
+      this.setState({
+        postingLocation: coords,
+      });
+      console.log(
+        'this is the state after the navigator function completes',
+        this.state
+      );
     });
-  }
-  changeHandler = event => {
-    this.setState({ selectedPhoto: event.target.files[0] });
-  };
+    this.setState({
+      image: filename,
+      progress: 100,
+      isUploading: false,
+      postingDate: new Date(),
+    });
 
-  uplaodHandler = event => {
-    event.preventDefault();
-    fire
-      .database()
-      .ref('photos')
-      .push(this.inputEl.files);
-    this.inputEl.files = '';
-    console.log(this.state.selectedPhoto);
+    firebase
+      .storage()
+      .ref('images')
+      .child(filename)
+      .getDownloadURL()
+      .then(url => this.setState({ imageURL: url }));
+    var newTreasure = database.ref('treasures').push();
+    newTreasure.set({
+      imageURL: this.state.imageURL,
+      image: this.state.image,
+      postingLocation: this.state.postingLocation,
+      postingDate: this.state.postingDate,
+      banana: 'yellow',
+    });
+    console.log('this is the state called by the outer function', this.state);
   };
-
-  // handleSubmit(event) {
-  //   event.preventDefault();
-  //   alert('you clicked the button');
-  // }
 
   render() {
     return (
       <div>
-        <form onSubmit={this.uplaodHandler.bind(this)}>
+        <form onSubmit={this.handleSubmit}>
+          {/* for mvp I think I will just have people post the image without any comments or description and then show it on the map with the time posted. will add these other fields if I have time. */}
+          {/* <label htmlFor="tags">tags</label>
           <input
-            type="file"
-            accept="image/*"
-            capture
-            onChange={this.changeHandler.bind(this)}
-            ref={el => (this.inputEl = el)}
+            type="text"
+            name="tags"
+            placeholder="example: chair, furniture"
           />
-          <input type="submit" />
-          <ul>
-            {/* Render the list of messages */
-            this.state.photos.map(photo => (
-              <li key={photo.id}>{photo.text}</li>
-            ))}
-          </ul>
-        </form>
-        {/* <form onSubmit={this.handleSubmit}>
+          <label htmlFor="description">description</label>
+          <textarea name="description" /> */}
+
           <label htmlFor="photo">Take a photo</label>
-          <input name="photo" type="file" accept="image/*" capture />
-          <button type="submit">Upload</button>
+          {this.state.isUploading && <p>Progress: {this.state.progress}</p>}
+          {this.state.imageURL && <img src={this.state.imageURL} />}
+
+          <FileUploader
+            accept="image/*"
+            name="photo"
+            capture
+            randomizeFilename
+            storageRef={firebase.storage().ref('images')}
+            onUploadStart={this.handleUploadStart}
+            onUploadError={this.handleUploadError}
+            onUploadSuccess={this.handleUploadSuccess}
+            onProgress={this.handleProgress}
+          />
         </form>
-        <img src="" /> */}
       </div>
     );
   }

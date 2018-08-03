@@ -1,5 +1,5 @@
 import firebase from 'firebase';
-import 'firebase/auth';
+// import 'firebase/auth';
 var config = {
   apiKey: 'AIzaSyB9fXFRJIQnXFP_8NhZXgeGxEs5UgYYdW8',
   authDomain: 'trash-to-treasur-1533175223809.firebaseapp.com',
@@ -11,5 +11,5 @@ var config = {
 var fire = firebase.initializeApp(config);
 export default fire;
 
-const auth = firebase.auth();
-export { auth };
+// const auth = firebase.auth();
+// export { auth };
