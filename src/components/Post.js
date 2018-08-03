@@ -9,10 +9,7 @@ export default class Post extends Component {
     this.state = {
       isUploading: false,
       progress: 0,
-      image: '',
       imageURL: '',
-      postingDate: '',
-      postingLocation: {},
     };
   }
 
@@ -26,38 +23,39 @@ export default class Post extends Component {
   };
 
   handleUploadSuccess = async filename => {
-    await navigator.geolocation.getCurrentPosition(pos => {
-      const coords = pos.coords;
-      this.setState({
-        postingLocation: coords,
-      });
-      console.log(
-        'this is the state after the navigator function completes',
-        this.state
-      );
-    });
-    this.setState({
-      image: filename,
-      progress: 100,
-      isUploading: false,
-      postingDate: new Date(),
-    });
-
+    //save image to firebase storage (seperate than the database)
     firebase
       .storage()
       .ref('images')
       .child(filename)
       .getDownloadURL()
       .then(url => this.setState({ imageURL: url }));
-    var newTreasure = database.ref('treasures').push();
-    newTreasure.set({
-      imageURL: this.state.imageURL,
-      image: this.state.image,
-      postingLocation: this.state.postingLocation,
-      postingDate: this.state.postingDate,
-      banana: 'yellow',
+
+    //make current data
+    let postingDateObject = new Date();
+
+    //set local state
+    this.setState({
+      image: filename,
+      progress: 100,
+      isUploading: false,
     });
-    console.log('this is the state called by the outer function', this.state);
+
+    //get geolocation
+    if (navigator && navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(pos => {
+        const coords = pos.coords;
+        const lat = Number(coords.latitude);
+        const long = Number(coords.longitude);
+        var newTreasure = database.ref('treasures').push();
+        newTreasure.set({
+          imageURL: this.state.imageURL,
+          lat: lat,
+          long: long,
+          postedDate: new Date().toString(),
+        });
+      });
+    }
   };
 
   render() {
