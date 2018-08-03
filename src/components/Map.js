@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import MapContainer from './MapContainer';
+import Post from './Post';
 
 export default class Map extends Component {
   constructor(props) {
@@ -20,7 +21,15 @@ export default class Map extends Component {
   render() {
     return (
       <div>
-        <MapContainer lat={this.state.lat} lng={this.state.lng} />
+        <Post />
+        <MapContainer
+          lat={this.state.lat}
+          lng={this.state.lng}
+          style={{
+            position: 'fixed',
+            zIndex: -1,
+          }}
+        />
       </div>
     );
   }

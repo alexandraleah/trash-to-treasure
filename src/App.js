@@ -1,13 +1,22 @@
 import React from 'react';
-import Map from '../src/components/Map';
+import { Link } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  withRouter,
+  Route,
+  Switch,
+  Redirect,
+} from 'react-router-dom';
+import GoogleMap from './components/Map';
 import Post from './components/Post';
+
 export default function App(props) {
   return (
-    <div>
-      <h1>Allston Christmas</h1>
-      <h2>Find free stuff on the street</h2>
-      <Post />
-      <Map />
-    </div>
+    <Router>
+      <Switch>
+        <Route exact path="/post" component={Post} />
+        <Route path="/" component={GoogleMap} />
+      </Switch>
+    </Router>
   );
 }

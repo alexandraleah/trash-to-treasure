@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import firebase from '../fire';
-import FileUploader from 'react-firebase-file-uploader';
+import CustomUploadButton from 'react-firebase-file-uploader/lib/CustomUploadButton';
 const database = firebase.database();
 
 export default class Post extends Component {
@@ -62,21 +62,7 @@ export default class Post extends Component {
     return (
       <div>
         <form onSubmit={this.handleSubmit}>
-          {/* for mvp I think I will just have people post the image without any comments or description and then show it on the map with the time posted. will add these other fields if I have time. */}
-          {/* <label htmlFor="tags">tags</label>
-          <input
-            type="text"
-            name="tags"
-            placeholder="example: chair, furniture"
-          />
-          <label htmlFor="description">description</label>
-          <textarea name="description" /> */}
-
-          <label htmlFor="photo">Take a photo</label>
-          {this.state.isUploading && <p>Progress: {this.state.progress}</p>}
-          {this.state.imageURL && <img src={this.state.imageURL} />}
-
-          <FileUploader
+          <CustomUploadButton
             accept="image/*"
             name="photo"
             capture
@@ -86,7 +72,15 @@ export default class Post extends Component {
             onUploadError={this.handleUploadError}
             onUploadSuccess={this.handleUploadSuccess}
             onProgress={this.handleProgress}
-          />
+            style={{
+              backgroundColor: 'steelblue',
+              color: 'white',
+              padding: 10,
+              borderRadius: 4,
+            }}
+          >
+            Add Treasure
+          </CustomUploadButton>
         </form>
       </div>
     );
