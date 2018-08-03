@@ -21,15 +21,9 @@ export default class Map extends Component {
   render() {
     return (
       <div>
+        <h1>Trash to Treasure</h1>
         <Post />
-        <MapContainer
-          lat={this.state.lat}
-          lng={this.state.lng}
-          style={{
-            position: 'fixed',
-            zIndex: -1,
-          }}
-        />
+        <MapContainer lat={this.state.lat} lng={this.state.lng} />
       </div>
     );
   }
