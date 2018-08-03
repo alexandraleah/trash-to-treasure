@@ -3,31 +3,34 @@ import fire from '../fire';
 export default class Post extends Component {
   constructor(props) {
     super(props);
-    this.state = { messages: [] };
-    // this.handleSubmit = this.handleSubmit.bind(this);
+    this.state = { photos: [], selectedPhoto: null };
   }
   componentWillMount() {
     /* Create reference to messages in Firebase Database */
-    let messagesRef = fire
+    let photosRef = fire
       .database()
-      .ref('messages')
+      .ref('photos')
       .orderByKey()
       .limitToLast(100);
-    messagesRef.on('child_added', snapshot => {
-      /* Update React state when message is added at Firebase Database */
-      let message = { text: snapshot.val(), id: snapshot.key };
-      this.setState({ messages: [message].concat(this.state.messages) });
+    photosRef.on('child_added', snapshot => {
+      /* Update React state when photo is added at Firebase Database */
+      let selectedPhoto = { image: snapshot.val(), id: snapshot.key };
+      this.setState({ photos: [selectedPhoto].concat(this.state.photos) });
     });
   }
+  changeHandler = event => {
+    this.setState({ selectedPhoto: event.target.files[0] });
+  };
 
-  addMessage(event) {
+  uplaodHandler = event => {
     event.preventDefault();
     fire
       .database()
-      .ref('messages')
-      .push(this.inputEl.value);
-    this.inputEl.value = '';
-  }
+      .ref('photos')
+      .push(this.inputEl.files);
+    this.inputEl.files = '';
+    console.log(this.state.selectedPhoto);
+  };
 
   // handleSubmit(event) {
   //   event.preventDefault();
@@ -37,13 +40,19 @@ export default class Post extends Component {
   render() {
     return (
       <div>
-        <form onSubmit={this.addMessage.bind(this)}>
-          <input type="text" ref={el => (this.inputEl = el)} />
+        <form onSubmit={this.uplaodHandler.bind(this)}>
+          <input
+            type="file"
+            accept="image/*"
+            capture
+            onChange={this.changeHandler.bind(this)}
+            ref={el => (this.inputEl = el)}
+          />
           <input type="submit" />
           <ul>
             {/* Render the list of messages */
-            this.state.messages.map(message => (
-              <li key={message.id}>{message.text}</li>
+            this.state.photos.map(photo => (
+              <li key={photo.id}>{photo.text}</li>
             ))}
           </ul>
         </form>
