@@ -1,14 +1,28 @@
 import React, { Component } from 'react';
-import MapContainer from './MapContainer';
+import GoogleMapReact from 'google-map-react';
 import Post from './Post';
-import firebase from '../fire';
 import axios from 'axios';
-const database = firebase.database();
 
-export default class Map extends Component {
+const AnyReactComponent = ({ text }) => <div>{text}</div>;
+
+export default class myMap extends Component {
+  static defaultProps = {
+    center: {
+      lat: -34.397,
+      lng: 150.644,
+    },
+    zoom: 15,
+  };
   constructor(props) {
     super(props);
-    this.state = { lat: -34.397, lng: 150.644, treasures: {} };
+    this.state = {
+      center: {
+        lat: -34.397,
+        lng: 150.644,
+      },
+      zoom: 15,
+      treasures: {},
+    };
   }
 
   async componentDidMount() {
@@ -22,10 +36,13 @@ export default class Map extends Component {
       navigator.geolocation.getCurrentPosition(pos => {
         const coords = pos.coords;
         this.setState({
-          lat: coords.latitude,
-          lng: coords.longitude,
+          center: {
+            lat: coords.latitude,
+            lng: coords.longitude,
+          },
         });
       });
+      this.map.panTo({ center: this.state.center });
     }
     console.log(this.state);
   }
@@ -35,10 +52,21 @@ export default class Map extends Component {
         <div id="postButton">
           <Post />
         </div>
-        {/* //   {Object.keys(this.state.treasures).map(key => ( */}
-        {/* //     <img src="{this.state.treasures[key].imageURL}" />
-      //   ))} */}
-        <MapContainer lat={this.state.lat} lng={this.state.lng} />
+        <div style={{ height: '100vh', width: '100%' }}>
+          <GoogleMapReact
+            bootstrapURLKeys={{
+              key: 'AIzaSyA_oI_wKTyYKqNFP3GZAjCu4XOpLreJTjE',
+            }}
+            defaultCenter={this.state.center}
+            defaultZoom={this.props.zoom}
+          >
+            <AnyReactComponent
+              lat={-35.397}
+              lng={151.644}
+              text={'Kreyser Avrora'}
+            />
+          </GoogleMapReact>
+        </div>
       </div>
     );
   }
