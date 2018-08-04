@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import MapContainer from './MapContainer';
 import Post from './Post';
 import firebase from '../fire';
+import axios from 'axios';
 const database = firebase.database();
 
 export default class Map extends Component {
@@ -11,13 +12,12 @@ export default class Map extends Component {
   }
 
   async componentDidMount() {
-    /* Create reference to messages in Firebase Database */
-    let treasuresRef = database.ref('treasures');
-    treasuresRef.on('child_added', snapshot => {
-      /* Update React state when message is added at Firebase Database */
-      let treasure = { item: snapshot.val(), id: snapshot.key };
-      this.setState({ treasures: { ...this.state, treasure } });
-    });
+    const response = await axios.get(
+      `https://trash-to-treasur-1533175223809.firebaseio.com/treasures.json`
+    );
+    const treasures = response.data;
+    this.setState({ treasures: treasures });
+
     if (navigator && navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(pos => {
         const coords = pos.coords;
@@ -34,6 +34,9 @@ export default class Map extends Component {
       <div>
         <h1>Trash to Treasure</h1>
         <Post />
+        {Object.keys(this.state.treasures).map(key => (
+          <img src={this.state.treasures[key].imageURL} />
+        ))}
         <MapContainer lat={this.state.lat} lng={this.state.lng} />
       </div>
     );
