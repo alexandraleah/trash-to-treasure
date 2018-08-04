@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import firebase from '../fire';
 import CustomUploadButton from 'react-firebase-file-uploader/lib/CustomUploadButton';
+
 const database = firebase.database();
 
 function getUserPosition() {
