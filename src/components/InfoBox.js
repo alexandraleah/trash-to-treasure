@@ -1,9 +1,16 @@
 import React from 'react';
 import Path from 'path';
-export default function CurrentPin() {
+export default function InfoBox(props) {
   return (
-    <div>
-      <img src={this.props.treasure.imageURL} />
+    <div className="infoBox">
+      <h1>The treasure</h1>
+      <div>
+        <img src={props.currentTreasure.imageURL} />
+        <p>
+          Location: {props.currentTreasure.lat}, {props.currentTreasure.lng}
+        </p>
+        <p> Date seen: {props.currentTreasure.date}</p>
+      </div>
     </div>
   );
 }

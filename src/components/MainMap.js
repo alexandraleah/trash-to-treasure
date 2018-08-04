@@ -4,6 +4,7 @@ import Path from 'path';
 import CurrentPin from './currentPin';
 import axios from 'axios';
 import TreasurePin from './TreasurePin';
+import InfoBox from './InfoBox';
 
 //refractor this so both components use the same function
 function getUserPosition() {
@@ -19,7 +20,10 @@ class MainMap extends Component {
       center: {},
       treasures: {},
       zoom: 15,
+      infoOn: false,
+      currentTreasure: {},
     };
+    this.setPinAsCenter = this.setPinAsCenter.bind(this);
   }
 
   static defaultProps = {
@@ -46,7 +50,12 @@ class MainMap extends Component {
       console.log('could not get data or user location', error);
     }
   }
-
+  setPinAsCenter() {
+    alert('set pin as center called!');
+  }
+  _onChildClick = (key, childProps) => {
+    this.setState({ infoOn: true, currentTreasure: childProps });
+  };
   render() {
     return (
       // Important! Always set the container height explicitly
@@ -56,10 +65,15 @@ class MainMap extends Component {
           defaultCenter={this.props.center}
           center={this.state.center}
           defaultZoom={this.state.zoom}
+          onChildClick={this._onChildClick}
           onChildMouseEnter={this.onChildMouseEnter}
           onChildMouseLeave={this.onChildMouseLeave}
         >
-          <CurrentPin lat={this.state.center.lat} lng={this.state.center.lng} />
+          <CurrentPin
+            lat={this.state.center.lat}
+            lng={this.state.center.lng}
+            onClick={() => this.setPinAsCenter()}
+          />
           {Object.keys(this.state.treasures).map(key => (
             <TreasurePin
               onClick={() => this.setPinAsCenter(key)}
@@ -67,12 +81,20 @@ class MainMap extends Component {
               onChildMouseLeave={this.onChildMouseLeave}
               handlePinClick={this.handleOnClick}
               treasure={key}
-              hover={this.state.hover}
               key={this.state.treasures[key].imageURL}
               lat={this.state.treasures[key].lat}
               lng={this.state.treasures[key].long}
+              imageURL={this.state.treasures[key].imageURL}
+              date={this.state.treasures[key].postedDate}
             />
           ))}
+          {this.state.infoOn === true ? (
+            <InfoBox
+              lat={this.state.lat}
+              lng={this.state.lng}
+              currentTreasure={this.state.currentTreasure}
+            />
+          ) : null}
         </GoogleMapReact>
       </div>
     );

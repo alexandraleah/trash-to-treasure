@@ -16,6 +16,15 @@ body {
   left: 10%;
 }
 
+.infoBox {
+  width: 300px;
+  background-color: white;
+  z-index: 200;
+}
+
+.infoBox img {
+  width: 90%;
+}
 /* header {
   background-color: steelblue;
   color: white;
