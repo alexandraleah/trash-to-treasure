@@ -3,9 +3,21 @@ import MapContainer from './MapContainer';
 import Post from './Post';
 import firebase from '../fire';
 import axios from 'axios';
+import Marker from './Marker';
 const database = firebase.database();
 
 export default class Map extends Component {
+  renderChildren() {
+    const { children } = this.props;
+    if (!children) return;
+    return React.Children.map(children, c => {
+      return React.cloneElement(c, {
+        map: this.map,
+        google: this.props.google,
+        mapCenter: this.state.currentLocation,
+      });
+    });
+  }
   constructor(props) {
     super(props);
     this.state = { lat: -34.397, lng: 150.644, treasures: {} };
@@ -30,6 +42,7 @@ export default class Map extends Component {
     console.log(this.state);
   }
   render() {
+    const pos = { lat: 37.759703, lng: -122.428093 };
     return (
       <div>
         <div id="postButton">
@@ -38,7 +51,10 @@ export default class Map extends Component {
         {/* //   {Object.keys(this.state.treasures).map(key => ( */}
         {/* //     <img src="{this.state.treasures[key].imageURL}" />
       //   ))} */}
-        <MapContainer lat={this.state.lat} lng={this.state.lng} />
+        <MapContainer lat={this.state.lat} lng={this.state.lng}>
+          <Marker />
+          <Marker position={pos} />
+        </MapContainer>
       </div>
     );
   }
