@@ -32,7 +32,6 @@ export default class Map extends Component {
   render() {
     return (
       <div>
-        {/* //   <h1>Trash to Treasure</h1> */}
         <div id="postButton">
           <Post />
         </div>

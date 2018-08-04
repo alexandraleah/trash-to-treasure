@@ -7,6 +7,17 @@ const style = {
 };
 
 export default class MapContainer extends Component {
+  renderChildren() {
+    const { children } = this.props;
+    if (!children) return;
+    return React.Children.map(children, c => {
+      return React.cloneElement(c, {
+        map: this.map,
+        google: this.props.google,
+        mapCenter: this.state.currentLocation,
+      });
+    });
+  }
   shouldComponentUpdate() {
     return false;
   }
@@ -24,6 +35,7 @@ export default class MapContainer extends Component {
     return (
       <div style={style}>
         <div id="map" ref="map" />
+        {this.renderChildren()}
       </div>
     );
   }
