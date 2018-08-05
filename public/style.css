@@ -22,8 +22,8 @@ body {
   z-index: 200;
 }
 
-.infoBox img {
-  width: 50%;
+.treasureImage {
+  width: 300px;
   transform: rotate(90deg);
 }
 /* header {

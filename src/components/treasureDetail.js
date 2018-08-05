@@ -27,9 +27,9 @@ export default class TreasureDetail extends Component {
   render() {
     return (
       <div>
-        <h1>Treasure</h1>
+        <h1>Item</h1>
         <div>
-          <img src={this.state.treasure.imageURL} />
+          <img src={this.state.treasure.imageURL} className="treasureImage" />
         </div>
         <h5>Approximate Location: {this.state.treasure.approxAddress}</h5>
         <h5> Date Posted: {this.state.treasure.postedDate}</h5>
