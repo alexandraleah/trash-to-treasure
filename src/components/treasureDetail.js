@@ -26,13 +26,26 @@ export default class TreasureDetail extends Component {
 
   render() {
     return (
-      <div>
-        <h1>Item</h1>
-        <div>
-          <img src={this.state.treasure.imageURL} className="treasureImage" />
+      <div className="container treasureDetail card">
+        <h4 className="text-center">Item</h4>
+        <div className="row">
+          <div className="image-wrapper col-sm-12 col-md-6">
+            <img
+              src={this.state.treasure.imageURL}
+              className="img-fluid"
+              alt="Item image"
+            />
+          </div>
+          {/* possibly link this to google maps like meal pal does? and/or show map below  */}
+          <div className="col-sm-12 col-md-6">
+            <br />
+            <h5 className=".ml-1">Details</h5>
+            <p>Approximate Location: {this.state.treasure.approxAddress}</p>
+            <p> Date Posted: {this.state.treasure.postedDate}</p>
+
+            <button className="btn btn-primary">Item taken</button>
+          </div>
         </div>
-        <h5>Approximate Location: {this.state.treasure.approxAddress}</h5>
-        <h5> Date Posted: {this.state.treasure.postedDate}</h5>
       </div>
     );
   }
