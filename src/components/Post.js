@@ -18,6 +18,7 @@ export default class Post extends Component {
       isUploading: false,
       progress: 0,
       imageURL: '',
+      image: '',
     };
   }
 
@@ -57,7 +58,6 @@ export default class Post extends Component {
         progress: 100,
         isUploading: false,
       });
-      console.log('after setState this is the state,', this.state);
       //get geolocation
       //if gelocation is not available need to have a fallback option with an else block. Possibly prompt user to enter in a place or select a point on the map. but for now we will just write a message to the console
       //maybe give them a choice whether to geolocate if they have the possiblity? that way if they are home posting it later or something. but then you will need a new page for it.
@@ -73,6 +73,7 @@ export default class Post extends Component {
         console.log('these are the coordinates,', lat, long);
         const address = await this.lookUpAddress(lat, long);
         var newTreasure = await database.ref('treasures').push();
+        var treasureKey = newTreasure.name();
         newTreasure.set({
           imageURL: this.state.imageURL,
           lat: lat,
@@ -80,6 +81,7 @@ export default class Post extends Component {
           approxAddress: address,
           postedDate: new Date().toString(),
         });
+        this.props.history.push(`/treasures/${treasureKey}`);
       } else {
         console.log('there is no support for geolocation');
       }
