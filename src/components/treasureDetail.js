@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import Path from 'path';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 
@@ -42,7 +41,7 @@ export default class TreasureDetail extends Component {
             <img
               src={this.state.treasure.imageURL}
               className="img-fluid"
-              alt="Item image"
+              alt="Item"
             />
           </div>
           {/* possibly link this to google maps like meal pal does? and/or show map below  */}

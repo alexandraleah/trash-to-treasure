@@ -3,8 +3,6 @@ import GoogleMapReact from 'google-map-react';
 import CurrentPin from './currentPin';
 import axios from 'axios';
 import TreasurePin from './TreasurePin';
-import InfoBox from './InfoBox';
-import { Link, Redirect } from 'react-router-dom';
 
 //refractor this so both components use the same function
 function getUserPosition() {
