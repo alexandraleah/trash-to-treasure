@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 function promisfyGeolocation() {
   return new Promise(function(resolve, reject) {
     navigator.geolocation.getCurrentPosition(resolve, reject);
@@ -23,4 +25,13 @@ export let getUserPosition = async function() {
     console.log(error);
     return false;
   }
+};
+
+export let lookUpAddress = async function(lat, long) {
+  const latlng = lat.toString() + ',' + long.toString();
+  const response = await axios.get(
+    `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latlng}&key=AIzaSyCjxnaxhQdSIlkUO_L6KZvYAJTy4Uasnw4
+    `
+  );
+  return response.data.results[0].formatted_address;
 };

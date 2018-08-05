@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import firebase from '../fire';
+//a library to upload files to firebase
 import CustomUploadButton from 'react-firebase-file-uploader/lib/CustomUploadButton';
-import axios from 'axios';
 import StatusIcon from './statusIcon';
-import { getUserPosition } from '../helperFunctions';
+import { getUserPosition, lookUpAddress } from '../helperFunctions';
 
 const database = firebase.database();
 
@@ -11,22 +11,17 @@ export default class Post extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      //these 2 state fields are utilized by CustomUploadButton
       isUploading: false,
       progress: 0,
+      //tracks the image url and image name after upload
       imageURL: '',
       image: '',
+      //tracks the combined status of the geolocating and file upload
       status: '',
     };
   }
   //move this into helper function file
-  lookUpAddress = async (lat, long) => {
-    const latlng = lat.toString() + ',' + long.toString();
-    const response = await axios.get(
-      `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latlng}&key=AIzaSyCjxnaxhQdSIlkUO_L6KZvYAJTy4Uasnw4
-      `
-    );
-    return response.data.results[0].formatted_address;
-  };
 
   handleUploadStart = () =>
     this.setState({ isUploading: true, progress: 0, status: 'isLoading' });
@@ -56,7 +51,7 @@ export default class Post extends Component {
       });
       //get location
       const { lat, lng } = await getUserPosition();
-      const address = await this.lookUpAddress(lat, lng);
+      const address = await lookUpAddress(lat, lng);
 
       var newTreasure = await database.ref('treasures').push();
       newTreasure.set({
