@@ -19,6 +19,7 @@ export default class Post extends Component {
       progress: 0,
       imageURL: '',
       image: '',
+      isLoading: false,
     };
   }
 
@@ -31,7 +32,8 @@ export default class Post extends Component {
     return response.data.results[0].formatted_address;
   };
 
-  handleUploadStart = () => this.setState({ isUploading: true, progress: 0 });
+  handleUploadStart = () =>
+    this.setState({ isUploading: true, progress: 0, isLoading: true });
 
   handleProgress = progress => this.setState({ progress });
 
@@ -49,8 +51,6 @@ export default class Post extends Component {
         .child(filename)
         .getDownloadURL()
         .then(url => this.setState({ imageURL: url }));
-      console.log('after firebase storage save this is the state,', this.state);
-      //make current data
 
       //set local state
       this.setState({
@@ -83,6 +83,7 @@ export default class Post extends Component {
         });
 
         var treasureKey = await newTreasure.key;
+        await this.setState({ isLoading: false });
         this.props.history.push(`/treasures/${treasureKey}`);
       } else {
         console.log('there is no support for geolocation');
@@ -113,6 +114,9 @@ export default class Post extends Component {
               borderRadius: 4,
             }}
           >
+            {this.state.isLoading ? (
+              <i className="fa fa-spinner fa-spin" />
+            ) : null}{' '}
             Add Treasure
           </CustomUploadButton>
         </form>
