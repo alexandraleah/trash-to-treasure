@@ -29,7 +29,7 @@ h5 {
 }
 
 header {
-  background-color: steelblue;
+  background-color: #2788c5;
   color: white;
   padding: 1vh;
   text-align: center;
@@ -38,4 +38,18 @@ header {
 header .fa {
   color: white;
   text-align: left;
+}
+
+.fa-map-pin {
+  color: #2788c5;
+  z-index: 200;
+}
+
+.fa-home {
+  color: white;
+}
+
+.myBtn {
+  background: #2788c5;
+  border-color: #2788c5;
 }

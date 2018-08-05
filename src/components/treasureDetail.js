@@ -69,7 +69,7 @@ export default class TreasureDetail extends Component {
               </div>
               <div className="col">
                 <Link to="/">
-                  <button className="btn btn-primary">Home</button>
+                  <button className="btn btn-primary myBtn">Home</button>
                 </Link>
               </div>
             </div>

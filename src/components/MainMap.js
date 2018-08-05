@@ -10,20 +10,21 @@ class MainMap extends Component {
     super(props);
     this.state = {
       center: {
-        lat: 0,
-        lng: 0,
+        lat: 42.3539,
+        lng: -71.1337,
       },
       treasures: {},
       zoom: 15,
       currentTreasure: {},
+      userPos: true,
     };
     this._onChildClick = this._onChildClick.bind(this);
   }
 
   static defaultProps = {
     center: {
-      lat: 59.95,
-      lng: 30.33,
+      lat: 42.3539,
+      lng: -71.1337,
     },
     zoom: 15,
   };
@@ -43,8 +44,12 @@ class MainMap extends Component {
 
     //then load your current location
 
-    const center = await getUserPosition();
-    this.setState({ center: center });
+    let userPos = await getUserPosition();
+    if (userPos) {
+      this.setState({ center: userPos });
+    } else {
+      this.setState({ userPos: false });
+    }
     //if geolocation is not enabled should still continue loading the rest of the content
     //then load icons
   }
@@ -68,8 +73,7 @@ class MainMap extends Component {
           onChildMouseEnter={this.onChildMouseEnter}
           onChildMouseLeave={this.onChildMouseLeave}
         >
-          {/* find another solution instead of setting the default location to 0,0. possibly with boolean on state */}
-          {this.state.lat && this.state.lng ? (
+          {this.state.userPos ? (
             <CurrentPin
               lat={this.state.center.lat}
               lng={this.state.center.lng}

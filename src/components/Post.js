@@ -18,7 +18,7 @@ export default class Post extends Component {
       status: '',
     };
   }
-
+  //move this into helper function file
   lookUpAddress = async (lat, long) => {
     const latlng = lat.toString() + ',' + long.toString();
     const response = await axios.get(
@@ -91,7 +91,7 @@ export default class Post extends Component {
             onUploadSuccess={this.handleUploadSuccess}
             onProgress={this.handleProgress}
             style={{
-              backgroundColor: 'steelblue',
+              backgroundColor: '#2788c5',
               color: 'white',
               padding: 10,
               borderRadius: 4,

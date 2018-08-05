@@ -17,8 +17,10 @@ export let getUserPosition = async function() {
       };
     } else {
       console.log('no support for geolocation');
+      return false;
     }
   } catch (error) {
     console.log(error);
+    return false;
   }
 };
