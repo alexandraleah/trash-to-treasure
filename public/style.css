@@ -34,3 +34,8 @@ header {
   padding: 1vh;
   text-align: center;
 }
+
+header .fa {
+  color: white;
+  text-align: left;
+}

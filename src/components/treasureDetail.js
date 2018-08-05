@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Path from 'path';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 export default class TreasureDetail extends Component {
   constructor(props) {
@@ -8,11 +9,11 @@ export default class TreasureDetail extends Component {
     this.state = {
       treasure: {},
     };
+    this.handleClick = this.handleClick.bind(this);
   }
 
   async componentDidMount() {
     const id = this.props.match.params.id;
-    console.log(id);
     try {
       const response = await axios.get(
         `https://trash-to-treasur-1533175223809.firebaseio.com/treasures/${id}.json`
@@ -22,6 +23,14 @@ export default class TreasureDetail extends Component {
     } catch (error) {
       console.log(error);
     }
+  }
+
+  async handleClick() {
+    const id = this.props.match.params.id;
+    await axios.delete(
+      `https://trash-to-treasur-1533175223809.firebaseio.com/treasures/${id}.json`
+    );
+    this.props.history.push('/');
   }
 
   render() {
@@ -40,15 +49,31 @@ export default class TreasureDetail extends Component {
           <div className="col-sm-12 col-md-6">
             <br />
             <h5 className=".ml-1">Details</h5>
-            {/* check that this is working and fix it if it's not */}
             <p>
               Approximate Location:{' '}
-              {this.state.treasure.approxAddress ||
-                this.state.treasure.lat + ', ' + this.state.treasure.long}
+              <a
+                href={`https://www.google.com/maps/?q=${
+                  this.state.treasure.lat
+                },${this.state.treasure.long}`}
+                target="_blank"
+              >
+                {this.state.treasure.approxAddress ||
+                  this.state.treasure.lat + ', ' + this.state.treasure.long}
+              </a>
             </p>
-            <p> Date Posted: {this.state.treasure.postedDate}</p>
-
-            <button className="btn btn-primary">Item taken</button>
+            <p>Date Posted: {this.state.treasure.postedDate}</p>
+            <div className="row">
+              <div className="col">
+                <button onClick={this.handleClick} className="btn btn-primary">
+                  Item taken
+                </button>
+              </div>
+              <div className="col">
+                <Link to="/">
+                  <button className="btn btn-primary">Home</button>
+                </Link>
+              </div>
+            </div>
           </div>
         </div>
       </div>

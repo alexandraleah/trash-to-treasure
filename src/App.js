@@ -8,20 +8,29 @@ const style = {
   backgroundColor: 'steelblue',
   color: 'white',
   padding: '10px',
-  textAlign: 'center',
 };
 
 export default function App(props) {
   return (
     <div>
-      {/* add a home icon to go back*/}
-      <header style={style}>
-        <h3>Trash to Treasure</h3>
+      {/*make the header into it's own component*/}
+      <header style={style} className="row">
+        <div className="col-2">
+          <Link to="/">
+            <i className="fa fa-home fa-2x" style={style} />
+          </Link>
+        </div>
+        <div className="col">
+          <h3 className="navbar-brand">Trash to Treasure</h3>
+        </div>
       </header>
       <Switch>
         <Route exact path="/post" component={Post} />
-
-        <Route exact path="/treasures/:id" component={TreasureDetail} />
+        <Route
+          exact
+          path="/treasures/:id"
+          render={props => <TreasureDetail {...props} />}
+        />
         <Route path="/" render={props => <Home {...props} />} />
       </Switch>
     </div>
