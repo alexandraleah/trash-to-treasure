@@ -9,12 +9,12 @@ const style = {
   color: 'white',
   padding: '10px',
   textAlign: 'center',
-  marginBottom: '20px',
 };
 
 export default function App(props) {
   return (
     <div>
+      {/* add a home icon to go back*/}
       <header style={style}>
         <h3>Trash to Treasure</h3>
       </header>

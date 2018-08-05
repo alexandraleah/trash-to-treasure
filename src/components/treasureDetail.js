@@ -40,7 +40,12 @@ export default class TreasureDetail extends Component {
           <div className="col-sm-12 col-md-6">
             <br />
             <h5 className=".ml-1">Details</h5>
-            <p>Approximate Location: {this.state.treasure.approxAddress}</p>
+            {/* check that this is working and fix it if it's not */}
+            <p>
+              Approximate Location:{' '}
+              {this.state.treasure.approxAddress ||
+                this.state.treasure.lat + ', ' + this.state.treasure.long}
+            </p>
             <p> Date Posted: {this.state.treasure.postedDate}</p>
 
             <button className="btn btn-primary">Item taken</button>
