@@ -72,8 +72,8 @@ export default class Post extends Component {
         //should catch errors either call an error function callback or make into a promise that you can await. The secon would be a good learning experience.
         console.log('these are the coordinates,', lat, long);
         const address = await this.lookUpAddress(lat, long);
+
         var newTreasure = await database.ref('treasures').push();
-        var treasureKey = newTreasure.name();
         newTreasure.set({
           imageURL: this.state.imageURL,
           lat: lat,
@@ -81,6 +81,8 @@ export default class Post extends Component {
           approxAddress: address,
           postedDate: new Date().toString(),
         });
+
+        var treasureKey = await newTreasure.key;
         this.props.history.push(`/treasures/${treasureKey}`);
       } else {
         console.log('there is no support for geolocation');
