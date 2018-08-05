@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import firebase from '../fire';
 import CustomUploadButton from 'react-firebase-file-uploader/lib/CustomUploadButton';
+import axios from 'axios';
 
 const database = firebase.database();
 
@@ -19,6 +20,15 @@ export default class Post extends Component {
       imageURL: '',
     };
   }
+
+  lookUpAddress = async (lat, long) => {
+    const latlng = lat.toString() + ',' + long.toString();
+    const response = await axios.get(
+      `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latlng}&key=AIzaSyCjxnaxhQdSIlkUO_L6KZvYAJTy4Uasnw4
+      `
+    );
+    return response.data.results[0].formatted_address;
+  };
 
   handleUploadStart = () => this.setState({ isUploading: true, progress: 0 });
 
@@ -61,11 +71,13 @@ export default class Post extends Component {
         const long = Number(coords.longitude);
         //should catch errors either call an error function callback or make into a promise that you can await. The secon would be a good learning experience.
         console.log('these are the coordinates,', lat, long);
+        const address = await this.lookUpAddress(lat, long);
         var newTreasure = await database.ref('treasures').push();
         newTreasure.set({
           imageURL: this.state.imageURL,
           lat: lat,
           long: long,
+          approxAddress: address,
           postedDate: new Date().toString(),
         });
       } else {
@@ -80,7 +92,6 @@ export default class Post extends Component {
     return (
       <div>
         <form onSubmit={this.handleSubmit}>
-          {this.state.imageURL && <img src={this.state.imageURL} />}
           <CustomUploadButton
             accept="image/*"
             name="photo"

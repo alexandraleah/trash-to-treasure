@@ -23,7 +23,8 @@ body {
 }
 
 .infoBox img {
-  width: 90%;
+  width: 50%;
+  transform: rotate(90deg);
 }
 /* header {
   background-color: steelblue;

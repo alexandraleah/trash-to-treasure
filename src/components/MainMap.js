@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import GoogleMapReact from 'google-map-react';
-import Path from 'path';
 import CurrentPin from './currentPin';
 import axios from 'axios';
 import TreasurePin from './TreasurePin';
 import InfoBox from './InfoBox';
+import { Link, Redirect } from 'react-router-dom';
 
 //refractor this so both components use the same function
 function getUserPosition() {
@@ -20,10 +20,9 @@ class MainMap extends Component {
       center: {},
       treasures: {},
       zoom: 15,
-      infoOn: false,
       currentTreasure: {},
     };
-    this.setPinAsCenter = this.setPinAsCenter.bind(this);
+    this._onChildClick = this._onChildClick.bind(this);
   }
 
   static defaultProps = {
@@ -35,7 +34,6 @@ class MainMap extends Component {
   };
   async componentDidMount() {
     try {
-      console.log('component mounted');
       const response = await axios.get(
         `https://trash-to-treasur-1533175223809.firebaseio.com/treasures.json`
       );
@@ -50,11 +48,12 @@ class MainMap extends Component {
       console.log('could not get data or user location', error);
     }
   }
-  setPinAsCenter() {
-    alert('set pin as center called!');
-  }
-  _onChildClick = (key, childProps) => {
-    this.setState({ infoOn: true, currentTreasure: childProps });
+
+  _onChildClick = async (key, childProps) => {
+    await this.setState({ currentTreasure: childProps });
+    this.props.history.push(
+      `/treasures/${this.state.currentTreasure.treasure}`
+    );
   };
   render() {
     return (
@@ -76,10 +75,6 @@ class MainMap extends Component {
           />
           {Object.keys(this.state.treasures).map(key => (
             <TreasurePin
-              onClick={() => this.setPinAsCenter(key)}
-              onChildMouseEnter={this.onChildMouseEnter}
-              onChildMouseLeave={this.onChildMouseLeave}
-              handlePinClick={this.handleOnClick}
               treasure={key}
               key={this.state.treasures[key].imageURL}
               lat={this.state.treasures[key].lat}
@@ -88,13 +83,13 @@ class MainMap extends Component {
               date={this.state.treasures[key].postedDate}
             />
           ))}
-          {this.state.infoOn === true ? (
+          {/* {this.state.infoOn === true ? (
             <InfoBox
               lat={this.state.lat}
               lng={this.state.lng}
               currentTreasure={this.state.currentTreasure}
             />
-          ) : null}
+          ) : null} */}
         </GoogleMapReact>
       </div>
     );

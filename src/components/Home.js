@@ -14,9 +14,9 @@ export default class Map extends Component {
     return (
       <div>
         <div id="postButton">
-          <Post />
+          <Post {...this.props} />
         </div>
-        <MainMap />
+        <MainMap {...this.props} />
       </div>
     );
   }
