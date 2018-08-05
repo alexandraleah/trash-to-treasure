@@ -4,14 +4,21 @@ function promisfyGeolocation() {
   });
 }
 
-if (navigator && navigator.geolocation) {
-  const pos = await getUserPosition();
-  const coords = pos.coords;
-  const lat = Number(coords.latitude);
-  const long = Number(coords.longitude);
-
-  const pos = await getUserPosition();
-  const coords = pos.coords;
-  const lat = Number(coords.latitude);
-  const lng = Number(coords.longitude);
-  this.setState({ center: { lat: lat, lng: lng }, treasures });
+export let getUserPosition = async function() {
+  try {
+    if (navigator && navigator.geolocation) {
+      const pos = await promisfyGeolocation();
+      const coords = pos.coords;
+      const lat = Number(coords.latitude);
+      const lng = Number(coords.longitude);
+      return {
+        lat: lat,
+        lng: lng,
+      };
+    } else {
+      console.log('no support for geolocation');
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};

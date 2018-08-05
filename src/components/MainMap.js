@@ -9,7 +9,10 @@ class MainMap extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      center: {},
+      center: {
+        lat: 0,
+        lng: 0,
+      },
       treasures: {},
       zoom: 15,
       currentTreasure: {},
@@ -26,24 +29,24 @@ class MainMap extends Component {
   };
   async componentDidMount() {
     //first load google map
-
-    //then load your current location
-
-    //then load icons
     try {
       const response = await axios.get(
         `https://trash-to-treasur-1533175223809.firebaseio.com/treasures.json`
       );
       const treasures = response.data;
-      const pos = await getUserPosition();
-      const coords = pos.coords;
-      const lat = Number(coords.latitude);
-      const lng = Number(coords.longitude);
-      this.setState({ center: { lat: lat, lng: lng }, treasures });
+
+      this.setState({ treasures });
       console.log('state after update', this.state);
     } catch (error) {
-      console.log('could not get data or user location', error);
+      console.log('could not get data', error);
     }
+
+    //then load your current location
+
+    const center = await getUserPosition();
+    this.setState({ center: center });
+    //if geolocation is not enabled should still continue loading the rest of the content
+    //then load icons
   }
 
   _onChildClick = async (key, childProps) => {
@@ -65,28 +68,22 @@ class MainMap extends Component {
           onChildMouseEnter={this.onChildMouseEnter}
           onChildMouseLeave={this.onChildMouseLeave}
         >
-          <CurrentPin
-            lat={this.state.center.lat}
-            lng={this.state.center.lng}
-            onClick={() => this.setPinAsCenter()}
-          />
+          {/* find another solution instead of setting the default location to 0,0. possibly with boolean on state */}
+          {this.state.lat && this.state.lng ? (
+            <CurrentPin
+              lat={this.state.center.lat}
+              lng={this.state.center.lng}
+            />
+          ) : null}
+
           {Object.keys(this.state.treasures).map(key => (
             <TreasurePin
               treasure={key}
               key={this.state.treasures[key].imageURL}
               lat={this.state.treasures[key].lat}
               lng={this.state.treasures[key].long}
-              imageURL={this.state.treasures[key].imageURL}
-              date={this.state.treasures[key].postedDate}
             />
           ))}
-          {/* {this.state.infoOn === true ? (
-            <InfoBox
-              lat={this.state.lat}
-              lng={this.state.lng}
-              currentTreasure={this.state.currentTreasure}
-            />
-          ) : null} */}
         </GoogleMapReact>
       </div>
     );

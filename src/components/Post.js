@@ -55,31 +55,21 @@ export default class Post extends Component {
         isUploading: false,
       });
       //get location
-      if (navigator && navigator.geolocation) {
-        const pos = await getUserPosition();
-        const coords = pos.coords;
-        const lat = Number(coords.latitude);
-        const long = Number(coords.longitude);
-        const address = await this.lookUpAddress(lat, long);
+      const { lat, lng } = await getUserPosition();
+      const address = await this.lookUpAddress(lat, lng);
 
-        var newTreasure = await database.ref('treasures').push();
-        newTreasure.set({
-          imageURL: this.state.imageURL,
-          lat: lat,
-          long: long,
-          approxAddress: address,
-          postedDate: new Date().toString(),
-        });
+      var newTreasure = await database.ref('treasures').push();
+      newTreasure.set({
+        imageURL: this.state.imageURL,
+        lat: lat,
+        long: lng,
+        approxAddress: address,
+        postedDate: new Date().toString(),
+      });
 
-        var treasureKey = await newTreasure.key;
-        await this.setState({ status: 'success' });
-        this.props.history.push(`/treasures/${treasureKey}`);
-      } else {
-        const errorMessage =
-          'Your browser does not support geolocation. At this time, without geolocation you cannot upload images.';
-        console.log('there is no support for geolocation');
-        this.setState({ status: 'error' });
-      }
+      var treasureKey = await newTreasure.key;
+      await this.setState({ status: 'success' });
+      this.props.history.push(`/treasures/${treasureKey}`);
     } catch (error) {
       console.log('there was an error', error);
       this.setState({ status: 'error' });
