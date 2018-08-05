@@ -4,6 +4,7 @@ import { Route, Switch } from 'react-router-dom';
 import Home from './components/Home';
 import Post from './components/Post';
 import TreasureDetail from './components/treasureDetail';
+import ErrorPage from './components/errorPage';
 const style = {
   backgroundColor: 'steelblue',
   color: 'white',
@@ -32,6 +33,7 @@ export default function App(props) {
           render={props => <TreasureDetail {...props} />}
         />
         <Route path="/" render={props => <Home {...props} />} />
+        <Route path="/error" component={ErrorPage} />
       </Switch>
     </div>
   );

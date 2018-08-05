@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import firebase from '../fire';
 import CustomUploadButton from 'react-firebase-file-uploader/lib/CustomUploadButton';
 import axios from 'axios';
+import StatusIcon from './statusIcon';
 
 const database = firebase.database();
 
@@ -19,7 +20,7 @@ export default class Post extends Component {
       progress: 0,
       imageURL: '',
       image: '',
-      isLoading: false,
+      status: '',
     };
   }
 
@@ -33,12 +34,12 @@ export default class Post extends Component {
   };
 
   handleUploadStart = () =>
-    this.setState({ isUploading: true, progress: 0, isLoading: true });
+    this.setState({ isUploading: true, progress: 0, status: 'isLoading' });
 
   handleProgress = progress => this.setState({ progress });
 
   handleUploadError = error => {
-    this.setState({ isUploading: false });
+    this.setState({ isUploading: false, isError: true });
     console.error(error);
   };
 
@@ -70,7 +71,6 @@ export default class Post extends Component {
         const lat = Number(coords.latitude);
         const long = Number(coords.longitude);
         //should catch errors either call an error function callback or make into a promise that you can await. The secon would be a good learning experience.
-        console.log('these are the coordinates,', lat, long);
         const address = await this.lookUpAddress(lat, long);
 
         var newTreasure = await database.ref('treasures').push();
@@ -83,13 +83,17 @@ export default class Post extends Component {
         });
 
         var treasureKey = await newTreasure.key;
-        await this.setState({ isLoading: false });
+        await this.setState({ status: 'success' });
         this.props.history.push(`/treasures/${treasureKey}`);
       } else {
+        const errorMessage =
+          'Your browser does not support geolocation. At this time, without geolocation you cannot upload images.';
         console.log('there is no support for geolocation');
+        this.setState({ status: 'error' });
       }
     } catch (error) {
       console.log('there was an error', error);
+      this.setState({ status: 'error' });
     }
   };
 
@@ -114,10 +118,7 @@ export default class Post extends Component {
               borderRadius: 4,
             }}
           >
-            {this.state.isLoading ? (
-              <i className="fa fa-spinner fa-spin" />
-            ) : null}{' '}
-            Add Treasure
+            <StatusIcon status={this.state.status} />&nbsp; Add Treasure
           </CustomUploadButton>
         </form>
       </div>
