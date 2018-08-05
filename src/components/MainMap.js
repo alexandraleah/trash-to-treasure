@@ -3,13 +3,7 @@ import GoogleMapReact from 'google-map-react';
 import CurrentPin from './currentPin';
 import axios from 'axios';
 import TreasurePin from './TreasurePin';
-
-//refractor this so both components use the same function
-function getUserPosition() {
-  return new Promise(function(resolve, reject) {
-    navigator.geolocation.getCurrentPosition(resolve, reject);
-  });
-}
+import { getUserPosition } from '../helperFunctions';
 
 class MainMap extends Component {
   constructor(props) {
@@ -31,6 +25,11 @@ class MainMap extends Component {
     zoom: 15,
   };
   async componentDidMount() {
+    //first load google map
+
+    //then load your current location
+
+    //then load icons
     try {
       const response = await axios.get(
         `https://trash-to-treasur-1533175223809.firebaseio.com/treasures.json`

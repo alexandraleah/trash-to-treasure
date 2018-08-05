@@ -18,6 +18,5 @@ export default function StatusIcon(props) {
     default:
       statusClassName = '';
   }
-  console.log(statusClassName);
   return <i className={statusClassName} />;
 }

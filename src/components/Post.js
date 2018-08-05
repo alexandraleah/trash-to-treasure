@@ -3,14 +3,9 @@ import firebase from '../fire';
 import CustomUploadButton from 'react-firebase-file-uploader/lib/CustomUploadButton';
 import axios from 'axios';
 import StatusIcon from './statusIcon';
+import { getUserPosition } from '../helperFunctions';
 
 const database = firebase.database();
-
-function getUserPosition() {
-  return new Promise(function(resolve, reject) {
-    navigator.geolocation.getCurrentPosition(resolve, reject);
-  });
-}
 
 export default class Post extends Component {
   constructor(props) {
@@ -59,18 +54,12 @@ export default class Post extends Component {
         progress: 100,
         isUploading: false,
       });
-      //get geolocation
-      //if gelocation is not available need to have a fallback option with an else block. Possibly prompt user to enter in a place or select a point on the map. but for now we will just write a message to the console
-      //maybe give them a choice whether to geolocate if they have the possiblity? that way if they are home posting it later or something. but then you will need a new page for it.
-      //also if you have a progress bar it could show the progress for the combined uploading and geolocating.
-      //look into how to do that.
-      //when i save in the database do I want to shrink the photos first? maybe i don't need to?
+      //get location
       if (navigator && navigator.geolocation) {
         const pos = await getUserPosition();
         const coords = pos.coords;
         const lat = Number(coords.latitude);
         const long = Number(coords.longitude);
-        //should catch errors either call an error function callback or make into a promise that you can await. The secon would be a good learning experience.
         const address = await this.lookUpAddress(lat, long);
 
         var newTreasure = await database.ref('treasures').push();
