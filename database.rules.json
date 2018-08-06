@@ -1,6 +1,10 @@
 {
   "rules": {
-    ".read": true,
-    ".write": true
+    ".read": false,
+    ".write": false,
+    "treasures": {
+      ".write": true,
+      ".read": true
+    }
   }
 }
