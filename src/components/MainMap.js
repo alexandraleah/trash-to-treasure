@@ -4,8 +4,7 @@ import GoogleMapReact from 'google-map-react';
 import CurrentPin from './currentPin';
 import axios from 'axios';
 import TreasurePin from './TreasurePin';
-import { getUserPosition } from '../helperFunctions';
-import ButterToast, { CinnamonSugar } from 'butter-toast';
+import { getUserPosition } from '../geoLocationFunctions';
 
 class MainMap extends Component {
   constructor(props) {
@@ -21,7 +20,6 @@ class MainMap extends Component {
       located: false,
     };
     this.onChildClick = this.onChildClick.bind(this);
-    this.noLocation = this.noLocation.bind(this);
   }
 
   static defaultProps = {
@@ -50,8 +48,6 @@ class MainMap extends Component {
     let userPos = await getUserPosition();
     if (userPos) {
       this.setState({ center: userPos, located: true });
-    } else {
-      this.noLocation();
     }
   }
   //when one of the map icons is clicked set the state to the current item and push the page for that item on to the history
@@ -61,18 +57,6 @@ class MainMap extends Component {
       `/treasures/${this.state.currentTreasure.treasure}`
     );
   };
-
-  noLocation() {
-    ButterToast.raise({
-      content: ({ toastId, dismiss }) => (
-        <div>
-          Geolocation is not enabled on your browser. You will not be able to
-          post photos.
-        </div>
-      ),
-      toastTimeout: 5000, // default: 3000 ms
-    });
-  }
 
   render() {
     return (

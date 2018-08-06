@@ -3,7 +3,7 @@ import firebase from '../fire';
 //a library to upload files to firebase
 import CustomUploadButton from 'react-firebase-file-uploader/lib/CustomUploadButton';
 import StatusIcon from './statusIcon';
-import { getUserPosition, lookUpAddress } from '../helperFunctions';
+import { getUserPosition, lookUpAddress } from '../geoLocationFunctions';
 
 const database = firebase.database();
 
