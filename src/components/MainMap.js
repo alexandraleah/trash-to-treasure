@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+//library for using google maps with react
 import GoogleMapReact from 'google-map-react';
 import CurrentPin from './currentPin';
 import axios from 'axios';
@@ -18,7 +19,7 @@ class MainMap extends Component {
       currentTreasure: {},
       userPos: true,
     };
-    this._onChildClick = this._onChildClick.bind(this);
+    this.onChildClick = this.onChildClick.bind(this);
   }
 
   static defaultProps = {
@@ -29,7 +30,7 @@ class MainMap extends Component {
     zoom: 15,
   };
   async componentDidMount() {
-    //first load google map
+    //first get the treasures from the database
     try {
       const response = await axios.get(
         `https://trash-to-treasur-1533175223809.firebaseio.com/treasures.json`
@@ -48,13 +49,12 @@ class MainMap extends Component {
     if (userPos) {
       this.setState({ center: userPos });
     } else {
+      //if geolocation failed set the user's position to false.
       this.setState({ userPos: false });
     }
-    //if geolocation is not enabled should still continue loading the rest of the content
-    //then load icons
   }
-
-  _onChildClick = async (key, childProps) => {
+  //when one of the map icons is clicked set the state to the current item and push the page for that item on to the history
+  onChildClick = async (key, childProps) => {
     await this.setState({ currentTreasure: childProps });
     this.props.history.push(
       `/treasures/${this.state.currentTreasure.treasure}`
@@ -69,17 +69,18 @@ class MainMap extends Component {
           defaultCenter={this.props.center}
           center={this.state.center}
           defaultZoom={this.state.zoom}
-          onChildClick={this._onChildClick}
+          onChildClick={this.onChildClick}
           onChildMouseEnter={this.onChildMouseEnter}
           onChildMouseLeave={this.onChildMouseLeave}
         >
+          {/* check whether the user's position has been obtained and if it has place a pin at the current position*/}
           {this.state.userPos ? (
             <CurrentPin
               lat={this.state.center.lat}
               lng={this.state.center.lng}
             />
           ) : null}
-
+          {/* place a pin for each item */}
           {Object.keys(this.state.treasures).map(key => (
             <TreasurePin
               treasure={key}
@@ -93,5 +94,4 @@ class MainMap extends Component {
     );
   }
 }
-
 export default MainMap;

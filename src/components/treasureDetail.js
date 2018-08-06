@@ -12,6 +12,8 @@ export default class TreasureDetail extends Component {
   }
 
   async componentDidMount() {
+    //get the specific item from the database based on the url id
+
     const id = this.props.match.params.id;
     try {
       const response = await axios.get(
@@ -25,6 +27,7 @@ export default class TreasureDetail extends Component {
   }
 
   async handleClick() {
+    //when delete button is clicked send an axio request to the database to delete it
     const id = this.props.match.params.id;
     await axios.delete(
       `https://trash-to-treasur-1533175223809.firebaseio.com/treasures/${id}.json`
@@ -44,7 +47,6 @@ export default class TreasureDetail extends Component {
               alt="Item"
             />
           </div>
-          {/* possibly link this to google maps like meal pal does? and/or show map below  */}
           <div className="col-sm-12 col-md-6">
             <br />
             <h5 className=".ml-1">Details</h5>
