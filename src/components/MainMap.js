@@ -17,7 +17,7 @@ class MainMap extends Component {
       treasures: {},
       zoom: 15,
       currentTreasure: {},
-      userPos: true,
+      located: false,
     };
     this.onChildClick = this.onChildClick.bind(this);
   }
@@ -47,10 +47,7 @@ class MainMap extends Component {
 
     let userPos = await getUserPosition();
     if (userPos) {
-      this.setState({ center: userPos });
-    } else {
-      //if geolocation failed set the user's position to false.
-      this.setState({ userPos: false });
+      this.setState({ center: userPos, located: true });
     }
   }
   //when one of the map icons is clicked set the state to the current item and push the page for that item on to the history
@@ -74,7 +71,7 @@ class MainMap extends Component {
           onChildMouseLeave={this.onChildMouseLeave}
         >
           {/* check whether the user's position has been obtained and if it has place a pin at the current position*/}
-          {this.state.userPos ? (
+          {this.state.located ? (
             <CurrentPin
               lat={this.state.center.lat}
               lng={this.state.center.lng}

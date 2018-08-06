@@ -96,7 +96,7 @@ export default class Post extends Component {
               borderRadius: 4,
             }}
           >
-            <StatusIcon status={this.state.status} />&nbsp; Add Treasure
+            <StatusIcon status={this.state.status} />
           </CustomUploadButton>
         </form>
       </div>
