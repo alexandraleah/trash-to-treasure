@@ -18,7 +18,7 @@ I used the Google Maps Platform for its map and geocoding APIs and Firebase for 
 
 ## To Do
 I plan to add the following features: 
-* Redux to handle state and allow the map's zoom level and current centering to be returned to when the user navigates away from and then back to the map page. 
+* Redux to handle state and allow the map's zoom level and current centering to be returned to when the user navigates away from and then back to the map page
 * User accounts 
 * A list view of items sorted by distance from user's current location
 
