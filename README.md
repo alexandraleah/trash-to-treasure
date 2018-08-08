@@ -10,6 +10,7 @@ Trash to Treasure is a progressive web app that helps people find the treasures 
 * [Bootstrap](https://getbootstrap.com/) - front-end framework
 * [google-map-react](https://www.npmjs.com/package/google-map-react) - library to interface with google map api
 * [react-firebase-file-uploader](https://www.npmjs.com/package/react-firebase-file-uploader) - library to upload files to firebase 
+* [Butter Toast](https://www.npmjs.com/package/butter-toast) - Toast notifications
 * Bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app)
 
 
