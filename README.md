@@ -1,7 +1,6 @@
 # Trash to Treasure
 
-This app allows users to post free stuff found on the street and helps other users to find the free stuff. Helps keep furniture and other household goods out of the landfill. 
-
+Trash to Treasure is a progressive web app that helps people find the treasures their neighbors are throwing away and prevents  furniture and household goods from ending up in the landfill. Users can snap and post photos of free items left out on the street for others to take. People looking for cool finds in their neighborhood can narrow their search without having to walk every block. 
 
 ## Built With
 
