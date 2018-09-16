@@ -76,12 +76,12 @@ class MainMap extends Component {
           onChildMouseLeave={this.onChildMouseLeave}
         >
           {/* check whether the user's position has been obtained and if it has place a pin at the current position*/}
-          {/* {this.state.located ? (
+          {this.state.located ? (
             <CurrentPin
               lat={this.state.center.lat}
               lng={this.state.center.lng}
             />
-          ) : null} */}
+          ) : null}
           {/* place a pin for each item */}
           {Object.keys(this.state.treasures).map(key => (
             <TreasurePin
