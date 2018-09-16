@@ -65,7 +65,7 @@ class MainMap extends Component {
       <div style={{ height: '90vh', width: '100%' }}>
         <GoogleMapReact
           bootstrapURLKeys={{
-            key: 'AIzaSyA_oI_wKTyYKqNFP3GZAjCu4XOpLreJTjE',
+            key: process.env.GOOGLE_APIKEY,
           }}
           defaultCenter={this.props.center}
           center={this.state.center}
