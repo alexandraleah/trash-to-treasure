@@ -37,7 +37,6 @@ export let lookUpAddress = async function(lat, long) {
   const latlng = lat.toString() + ',' + long.toString();
   const response = await axios.get(
     `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latlng}&key=AIzaSyBK0aygWZBhZEQik-vEGakhVGnx0acVArA
-
     `
   );
   //this api returns many possible human readable versions of the address. We grab the first one, which for these purposes is enough.
