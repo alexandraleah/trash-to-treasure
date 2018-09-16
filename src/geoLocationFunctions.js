@@ -39,7 +39,7 @@ export let lookUpAddress = async function(lat, long) {
     `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latlng}&key=AIzaSyCjxnaxhQdSIlkUO_L6KZvYAJTy4Uasnw4
     `
   );
-  //this api returns many possible human readable versions of the address. We grabe the first one, which for these purposes is enough.
+  //this api returns many possible human readable versions of the address. We grab the first one, which for these purposes is enough.
   return response.data.results[0].formatted_address;
 };
 
