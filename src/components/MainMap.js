@@ -5,6 +5,7 @@ import CurrentPin from './currentPin';
 import axios from 'axios';
 import TreasurePin from './TreasurePin';
 import { getUserPosition } from '../geoLocationFunctions';
+import google_api_key from '../../keys';
 
 class MainMap extends Component {
   constructor(props) {
@@ -65,7 +66,7 @@ class MainMap extends Component {
       <div style={{ height: '90vh', width: '100%' }}>
         <GoogleMapReact
           bootstrapURLKeys={{
-            key: 'AIzaSyCbKF1zjMGdYKb3ZLfuNluJKSPBzJWV3uc',
+            key: google_api_key,
           }}
           defaultCenter={this.props.center}
           center={this.state.center}
