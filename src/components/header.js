@@ -12,6 +12,7 @@ export default function TreasureHeader(props) {
         </div>
         <div className="col">
           <h3 className="navbar-brand">Trash to Treasure</h3>
+          <p>Hello world! </p>
         </div>
       </header>
     </div>

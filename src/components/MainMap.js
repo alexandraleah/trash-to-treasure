@@ -65,7 +65,7 @@ class MainMap extends Component {
 
       <div style={{ height: '90vh', width: '100%' }}>
         {/* i think this is the problem here - not with the geolocation */}
-        {/* <GoogleMapReact
+        <GoogleMapReact
           bootstrapURLKeys={{
             key: 'AIzaSyDU8bwFuCeqgGL0_AihNBNnh4AhX-DPvUw',
           }}
@@ -75,25 +75,24 @@ class MainMap extends Component {
           onChildClick={this.onChildClick}
           onChildMouseEnter={this.onChildMouseEnter}
           onChildMouseLeave={this.onChildMouseLeave}
-        > */}
-        {/* check whether the user's position has been obtained and if it has place a pin at the current position*/}
-        {/* {this.state.located ? (
+        >
+          {/* check whether the user's position has been obtained and if it has place a pin at the current position*/}
+          {this.state.located ? (
             <CurrentPin
               lat={this.state.center.lat}
               lng={this.state.center.lng}
             />
-          ) : null} */}
-        {/* place a pin for each item */}
-        {/* {Object.keys(this.state.treasures).map(key => (
+          ) : null}
+          {/* place a pin for each item */}
+          {Object.keys(this.state.treasures).map(key => (
             <TreasurePin
               treasure={key}
               key={this.state.treasures[key].imageURL}
               lat={this.state.treasures[key].lat}
               lng={this.state.treasures[key].long}
             />
-          ))} */}
-        <div>Hello world</div>
-        {/* </GoogleMapReact> */}
+          ))}
+        </GoogleMapReact>
       </div>
     );
   }
