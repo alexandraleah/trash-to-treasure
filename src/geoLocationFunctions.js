@@ -1,3 +1,5 @@
+import google_api_key from './keys';
+
 import axios from 'axios';
 //ButterToast is a library that creates toasts
 import ButterToast, { CinnamonSugar } from 'butter-toast';
@@ -36,7 +38,7 @@ export let getUserPosition = async function() {
 export let lookUpAddress = async function(lat, long) {
   const latlng = lat.toString() + ',' + long.toString();
   const response = await axios.get(
-    `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latlng}&key=AIzaSyDU8bwFuCeqgGL0_AihNBNnh4AhX-DPvUw
+    `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latlng}&key=${google_api_key}
     `
   );
   //this api returns many possible human readable versions of the address. We grab the first one, which for these purposes is enough.

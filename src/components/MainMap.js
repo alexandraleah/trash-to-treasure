@@ -5,7 +5,7 @@ import CurrentPin from './currentPin';
 import axios from 'axios';
 import TreasurePin from './TreasurePin';
 import { getUserPosition } from '../geoLocationFunctions';
-import google_api_key from '../../keys';
+import google_api_key from '../keys';
 
 class MainMap extends Component {
   constructor(props) {
@@ -67,7 +67,7 @@ class MainMap extends Component {
         {/* i think this is the problem here - not with the geolocation */}
         <GoogleMapReact
           bootstrapURLKeys={{
-            key: 'AIzaSyDU8bwFuCeqgGL0_AihNBNnh4AhX-DPvUw',
+            key: google_api_key,
           }}
           defaultCenter={this.props.center}
           center={this.state.center}
