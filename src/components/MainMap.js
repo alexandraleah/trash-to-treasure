@@ -1,35 +1,32 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { locate } from '../store/map';
+
 //library for using google maps with react
 import GoogleMapReact from 'google-map-react';
 import CurrentPin from './currentPin';
 import axios from 'axios';
 import TreasurePin from './TreasurePin';
-import { getUserPosition } from '../geoLocationFunctions';
 import google_api_key from '../keys';
+//remember to use prop types, go back and add this in
 
 class MainMap extends Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
     this.state = {
-      center: {
-        lat: 42.3539,
-        lng: -71.1337,
-      },
       treasures: {},
-      zoom: 15,
       currentTreasure: {},
-      located: false,
     };
     this.onChildClick = this.onChildClick.bind(this);
   }
 
-  static defaultProps = {
-    center: {
-      lat: 42.3539,
-      lng: -71.1337,
-    },
-    zoom: 15,
-  };
+  // static defaultProps = {
+  //   center: {
+  //     lat: 42.3539,
+  //     lng: -71.1337,
+  //   },
+  //   zoom: 15,
+  // };
   async componentDidMount() {
     //first get the treasures from the database
     try {
@@ -45,14 +42,11 @@ class MainMap extends Component {
     }
 
     //then load your current location
-    //if the user has set a position
-    let userPos = await getUserPosition();
+    this.props.getUserPosition();
+
     // if a treasure is on state center to that position
     //but also provide a button so that the user can locate themselves and recenter around that
     //probably putting all of this into store state would make sense
-    if (userPos) {
-      this.setState({ center: userPos, located: true });
-    }
   }
   //when one of the map icons is clicked set the state to the current item and push the page for that item on to the history
   onChildClick = async (key, childProps) => {
@@ -73,8 +67,8 @@ class MainMap extends Component {
             key: google_api_key,
           }}
           defaultCenter={this.props.center}
-          center={this.state.center}
-          defaultZoom={this.state.zoom}
+          center={this.props.center}
+          defaultZoom={this.props.zoom}
           onChildClick={this.onChildClick}
           onChildMouseEnter={this.onChildMouseEnter}
           onChildMouseLeave={this.onChildMouseLeave}
@@ -82,8 +76,8 @@ class MainMap extends Component {
           {/* check whether the user's position has been obtained and if it has place a pin at the current position*/}
           {this.state.located ? (
             <CurrentPin
-              lat={this.state.center.lat}
-              lng={this.state.center.lng}
+              lat={this.props.center.lat}
+              lng={this.props.center.lng}
             />
           ) : null}
           {/* place a pin for each item */}
@@ -100,4 +94,24 @@ class MainMap extends Component {
     );
   }
 }
-export default MainMap;
+
+const mapStateToProps = state => {
+  return {
+    center: state.map.center,
+    zoom: state.map.zoom,
+    located: state.map.located,
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    getUserPosition: () => {
+      dispatch(locate());
+    },
+  };
+};
+
+export default (MainMap = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(MainMap));

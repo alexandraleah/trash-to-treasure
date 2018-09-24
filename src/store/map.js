@@ -24,7 +24,7 @@ const setCenter = coords => ({
 //THUNK CREATORS
 export const locate = () => async dispatch => {
   try {
-    userPos = await getUserPosition();
+    let userPos = await getUserPosition();
     //not sure if we need this if statement, or if it will just go into the catch block
     //may choose to incorporate getUserPosition directly into this function instead of declaring it in another file and importing and calling it.
     if (userPos) {
