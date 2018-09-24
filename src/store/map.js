@@ -1,5 +1,9 @@
+import { getUserPosition } from '../geoLocationFunctions';
+
 // ACTION TYPES
-const SET_CENTER = 'SET_CENTER'
+const SET_CENTER = 'SET_CENTER';
+//this action will be created in a different reducer
+const CHOOSE_TREASURE = 'CHOOSE_TREASURE';
 
 //INITIAL STATE
 
@@ -10,25 +14,36 @@ const initialState = {
   },
   zoom: 15,
   located: false,
-}
+};
 //ACTIONS CREATORS
 const setCenter = coords => ({
   type: SET_CENTER,
-  coords
-})
+  coords,
+});
 
 //THUNK CREATORS
-export const LOCATE = () => async dispatch => {
+export const locate = () => async dispatch => {
   try {
-    // we want to return a category object with topScores on it
-    const { data } = await axios.get(`/api/categories/${category.id}`)
-    // history.push(`/home/${category.id}`)
-    dispatch(setCategory(data))
-  } catch (err) { console.error(err) }
-}
+    userPos = await getUserPosition();
+    //not sure if we need this if statement, or if it will just go into the catch block
+    //may choose to incorporate getUserPosition directly into this function instead of declaring it in another file and importing and calling it.
+    if (userPos) {
+      dispatch(setCenter(userPos));
+    }
+  } catch (err) {
+    console.error(err);
+  }
+};
 
+//REDUCER
+const reducer = (state = initialState, action) => {
+  switch (action.type) {
+    case SET_CENTER:
+      return { ...state, center: action.coords, located: true };
 
-//set current center on state before navigating to a new page
+    default:
+      return state;
+  }
+};
 
-//set current zoom on state before navigating to a new page
-const
+export default reducer;
