@@ -45,8 +45,11 @@ class MainMap extends Component {
     }
 
     //then load your current location
-
+    //if the user has set a position
     let userPos = await getUserPosition();
+    // if a treasure is on state center to that position
+    //but also provide a button so that the user can locate themselves and recenter around that
+    //probably putting all of this into store state would make sense
     if (userPos) {
       this.setState({ center: userPos, located: true });
     }
